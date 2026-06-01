@@ -1,171 +1,259 @@
-<style>
-    :root {
-        --space-bg: #0f172a;
-        --neon-blue: #38bdf8;
-        --neon-purple: #818cf8;
-        --success: #2ecc71;
-        --danger: #e74c3c;
-        --white: #ffffff;
-    }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misión Verbo</title>
 
-    body {
-        font-family: 'Afacad Flux', sans-serif;
-        background: radial-gradient(circle at center, #1e293b 0%, var(--space-bg) 100%);
-        margin: 0;
-        padding: 20px;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: var(--white);
-    }
+    <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@400;600;700&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
 
-    .game-container {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 30px;
-        padding: 40px;
-        width: 100%;
-        max-width: 850px;
-        text-align: center;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    }
+    <style>
+        :root {
+            --space-bg: #0f172a;
+            --neon-blue: #38bdf8;
+            --neon-purple: #818cf8;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --white: #ffffff;
+        }
 
-    h1 { font-family: 'Comfortaa', cursive; color: var(--neon-blue); font-size: 3rem; margin-bottom: 10px; text-shadow: 0 0 15px rgba(56, 189, 248, 0.4); }
-    .hidden { display: none !important; }
-    
-    .mission-status {
-        font-size: 1.4rem;
-        color: var(--neon-purple);
-        margin-bottom: 20px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        font-weight: bold;
-    }
+        body {
+            font-family: 'Afacad Flux', sans-serif;
+            background: radial-gradient(circle at center, #1e293b 0%, var(--space-bg) 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+        }
 
-    .sentence-box {
-        background: rgba(0, 0, 0, 0.4);
-        padding: 30px;
-        border-radius: 20px;
-        font-size: 1.8rem;
-        margin: 20px 0;
-        line-height: 2;
-        border-bottom: 4px solid var(--neon-blue);
-    }
+        .game-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 40px;
+            width: 100%;
+            max-width: 850px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
 
-    .word-btn {
-        display: inline-block;
-        padding: 5px 15px;
-        margin: 5px;
-        background: transparent;
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        border-radius: 12px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        color: white;
-        font-size: 1.6rem;
-    }
+        h1 {
+            font-family: 'Comfortaa', cursive;
+            color: var(--neon-blue);
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
 
-    .word-btn:hover { border-color: var(--neon-blue); background: rgba(56, 189, 248, 0.1); }
-    .word-btn.selected { background: var(--neon-blue); color: #000; border-color: var(--neon-blue); font-weight: bold; box-shadow: 0 0 15px var(--neon-blue); }
+        .hidden {
+            display: none !important;
+        }
 
-    .analysis-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        margin: 30px 0;
-    }
+        .mission-status {
+            font-size: 1.4rem;
+            color: var(--neon-purple);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
 
-    select {
-        padding: 15px;
-        border-radius: 15px;
-        border: 2px solid rgba(255, 255, 255, 0.1);
-        background: #1e293b;
-        color: white;
-        font-size: 1.1rem;
-        cursor: pointer;
-        outline: none;
-        font-weight: bold;
-    }
+        .sentence-box {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 20px;
+            font-size: 1.8rem;
+            margin: 20px 0;
+            line-height: 2;
+            border-bottom: 4px solid var(--neon-blue);
+        }
 
-    select:focus { border-color: var(--neon-purple); }
+        .word-btn {
+            display: inline-block;
+            padding: 5px 15px;
+            margin: 5px;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 1.6rem;
+        }
 
-    button.main-btn {
-        background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
-        color: white;
-        border: none;
-        padding: 15px 40px;
-        font-size: 1.3rem;
-        border-radius: 50px;
-        cursor: pointer;
-        font-weight: bold;
-        box-shadow: 0 10px 20px rgba(129, 140, 248, 0.3);
-        transition: 0.3s;
-        font-family: 'Comfortaa';
-    }
+        .word-btn:hover {
+            border-color: var(--neon-blue);
+            background: rgba(56, 189, 248, 0.1);
+        }
 
-    button.main-btn:hover { transform: scale(1.05); filter: brightness(1.1); box-shadow: 0 10px 25px rgba(56, 189, 248, 0.5); }
+        .word-btn.selected {
+            background: var(--neon-blue);
+            color: #000;
+            border-color: var(--neon-blue);
+            font-weight: bold;
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
 
-    .progress-bar {
-        height: 12px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-        margin-bottom: 30px;
-        overflow: hidden;
-    }
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
 
-    .progress-fill {
-        height: 100%;
-        background: linear-gradient(90deg, var(--neon-blue), var(--success));
-        width: 0%;
-        transition: width 0.5s ease;
-    }
+        select {
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: #1e293b;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            outline: none;
+            font-weight: bold;
+        }
 
-    #feedback {
-        font-size: 1.4rem;
-        margin-top: 20px;
-        padding: 15px;
-        border-radius: 15px;
-        font-weight: 600;
-    }
-    .correct { color: var(--success); text-shadow: 0 0 10px rgba(46, 204, 113, 0.3); }
-    .incorrect { color: var(--danger); text-shadow: 0 0 10px rgba(231, 76, 60, 0.3); }
+        select:focus {
+            border-color: var(--neon-purple);
+        }
 
-    input#student-name {
-        background: rgba(0, 0, 0, 0.2);
-        border: 2px solid rgba(255,255,255,0.2);
-        padding: 15px 25px;
-        border-radius: 30px;
-        color: white;
-        font-size: 1.3rem;
-        width: 80%;
-        margin-bottom: 25px;
-        text-align: center;
-        outline: none;
-    }
-    input#student-name:focus { border-color: var(--neon-blue); }
-</style>
+        button.main-btn {
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(129, 140, 248, 0.3);
+            transition: 0.3s;
+            font-family: 'Comfortaa';
+        }
+
+        button.main-btn:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.5);
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-blue), var(--success));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        #feedback {
+            font-size: 1.4rem;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+
+        .correct {
+            color: var(--success);
+            text-shadow: 0 0 10px rgba(46, 204, 113, 0.3);
+        }
+
+        .incorrect {
+            color: var(--danger);
+            text-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
+        }
+
+        input#student-name {
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255,255,255,0.2);
+            padding: 15px 25px;
+            border-radius: 30px;
+            color: white;
+            font-size: 1.3rem;
+            width: 80%;
+            margin-bottom: 25px;
+            text-align: center;
+            outline: none;
+        }
+
+        input#student-name:focus {
+            border-color: var(--neon-blue);
+        }
+
+        @media (max-width: 700px) {
+            .game-container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .sentence-box {
+                font-size: 1.4rem;
+                padding: 20px;
+            }
+
+            .word-btn {
+                font-size: 1.3rem;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+
+            button.main-btn {
+                font-size: 1.1rem;
+                padding: 13px 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
 
 <div class="game-container">
     <div id="start-screen">
         <h1>MISIÓN VERBO</h1>
         <div class="mission-status">🚀 El Gran Reto de las 100 Oraciones 🚀</div>
-        <p style="font-size: 1.2rem; margin-bottom: 30px;">¡Bienvenido/a al centro de mando! Se te asignarán 10 oraciones aleatorias. ¿Podrás conseguir el reporte perfecto?</p>
+        <p style="font-size: 1.2rem; margin-bottom: 30px;">
+            ¡Bienvenido/a al centro de mando! Se te asignarán 10 oraciones aleatorias.
+            ¿Podrás conseguir el reporte perfecto?
+        </p>
         <input type="text" id="student-name" placeholder="IDENTIFÍCATE, EXPLORADOR/A">
         <br>
         <button class="main-btn" onclick="initMission()">INICIAR MISIÓN</button>
     </div>
 
     <div id="game-screen" class="hidden">
-        <div class="progress-bar"><div id="progress" class="progress-fill"></div></div>
+        <div class="progress-bar">
+            <div id="progress" class="progress-fill"></div>
+        </div>
+
         <div id="mission-info" class="mission-status">1 DE 10</div>
-        
-        <p style="font-size: 1.2rem;">🎯 <strong>Paso 1:</strong> Haz clic sobre el <strong>VERBO</strong> de la oración:</p>
+
+        <p style="font-size: 1.2rem;">
+            🎯 <strong>Paso 1:</strong> Haz clic sobre el <strong>VERBO</strong> de la oración:
+        </p>
+
         <div id="sentence-container" class="sentence-box"></div>
 
         <div id="analysis-section" class="hidden">
-            <p style="font-size: 1.2rem;">⚙️ <strong>Paso 2:</strong> Descifra los parámetros morfológicos de la acción:</p>
+            <p style="font-size: 1.2rem;">
+                ⚙️ <strong>Paso 2:</strong> Descifra los parámetros morfológicos de la acción:
+            </p>
+
             <div class="analysis-grid">
                 <select id="sel-person">
                     <option value="">-- PERSONA --</option>
@@ -173,11 +261,13 @@
                     <option value="2ª">2ª Persona</option>
                     <option value="3ª">3ª Persona</option>
                 </select>
+
                 <select id="sel-number">
                     <option value="">-- NÚMERO --</option>
                     <option value="Singular">Singular</option>
                     <option value="Plural">Plural</option>
                 </select>
+
                 <select id="sel-time">
                     <option value="">-- TIEMPO --</option>
                     <option value="Pasado">Pasado</option>
@@ -185,24 +275,27 @@
                     <option value="Futuro">Futuro</option>
                 </select>
             </div>
+
             <button id="check-btn" class="main-btn" onclick="verifyAnswer()">VERIFICAR SEÑAL</button>
         </div>
 
         <div id="feedback" class="hidden"></div>
+
         <button id="next-btn" class="main-btn hidden" onclick="loadNextQuestion()">CONTINUAR MISIÓN ➡️</button>
     </div>
 
     <div id="end-screen" class="hidden">
         <h1>¡MISIÓN COMPLETADA!</h1>
         <p id="final-score" style="font-size: 1.6rem; font-weight: bold; margin: 20px 0;"></p>
-        <p id="cloud-status" style="color: var(--neon-purple); font-size: 1.2rem;">Enviando informe a la central...</p>
+        <p id="cloud-status" style="color: var(--neon-purple); font-size: 1.2rem;">
+            Enviando informe a la central...
+        </p>
         <br>
         <button class="main-btn" onclick="location.reload()">NUEVA MISIÓN</button>
     </div>
 </div>
 
 <script>
-    // CAMBIA ESTA LÍNEA DE ABAJO POR TU ENLACE DE APPS SCRIPT:
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxJ8VTKjafDMrK53eCMkfIuO59bUKoW-0Po9EgTCBqtElWpTz8RUU1GQIbq2TWhe9lb/exec";
 
     const masterBank = [
@@ -236,65 +329,83 @@
 
     function initMission() {
         userName = document.getElementById("student-name").value.trim();
-        if(!userName) {
+
+        if (!userName) {
             alert("Por favor, introduce tu nombre de explorador/a.");
             return;
         }
+
         currentMission = [...masterBank].sort(() => Math.random() - 0.5).slice(0, 10);
         currentIndex = 0;
         score = 0;
+
         document.getElementById("start-screen").classList.add("hidden");
         document.getElementById("game-screen").classList.remove("hidden");
+
         loadQuestion();
     }
 
     function loadQuestion() {
         const q = currentMission[currentIndex];
         selectedVerb = "";
+
         document.getElementById("mission-info").innerText = `${currentIndex + 1} DE 10`;
         document.getElementById("progress").style.width = (currentIndex / 10) * 100 + "%";
+
         document.getElementById("analysis-section").classList.add("hidden");
         document.getElementById("feedback").classList.add("hidden");
         document.getElementById("next-btn").classList.add("hidden");
         document.getElementById("check-btn").classList.remove("hidden");
+
         document.getElementById("sel-person").value = "";
         document.getElementById("sel-number").value = "";
         document.getElementById("sel-time").value = "";
+
         const container = document.getElementById("sentence-container");
         container.innerHTML = "";
-        
+
         q.s.split(" ").forEach(word => {
-            const clean = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()¡¿?]/g,"");
+            const clean = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()¡¿?]/g, "");
             const btn = document.createElement("button");
+
             btn.className = "word-btn";
             btn.innerText = word;
+
             btn.onclick = () => {
                 document.querySelectorAll(".word-btn").forEach(b => b.classList.remove("selected"));
                 btn.classList.add("selected");
                 selectedVerb = clean.toLowerCase();
                 document.getElementById("analysis-section").classList.remove("hidden");
             };
+
             container.appendChild(btn);
         });
     }
 
     function verifyAnswer() {
         const q = currentMission[currentIndex];
+
         const p = document.getElementById("sel-person").value;
         const n = document.getElementById("sel-number").value;
         const t = document.getElementById("sel-time").value;
 
-        if(!p || !n || !t) {
+        if (!selectedVerb) {
+            alert("Primero debes seleccionar el verbo de la oración.");
+            return;
+        }
+
+        if (!p || !n || !t) {
             alert("¡Debes analizar todos los parámetros del verbo!");
             return;
         }
 
-        const isVerbCorrect = (selectedVerb === q.v.toLowerCase());
-        const isGrammarCorrect = (p === q.p && n === q.n && t === q.t);
+        const isVerbCorrect = selectedVerb === q.v.toLowerCase();
+        const isGrammarCorrect = p === q.p && n === q.n && t === q.t;
+
         const feedback = document.getElementById("feedback");
         feedback.classList.remove("hidden");
 
-        if(isVerbCorrect && isGrammarCorrect) {
+        if (isVerbCorrect && isGrammarCorrect) {
             score++;
             feedback.className = "correct";
             feedback.innerText = "⭐ ¡EXCELENTE! Transmisión descifrada con éxito.";
@@ -302,13 +413,15 @@
             feedback.className = "incorrect";
             feedback.innerText = `⚠️ ERROR. El verbo era "${q.v}" (${q.p} Persona, ${q.n}, ${q.t}).`;
         }
+
         document.getElementById("check-btn").classList.add("hidden");
         document.getElementById("next-btn").classList.remove("hidden");
     }
 
     function loadNextQuestion() {
         currentIndex++;
-        if(currentIndex < currentMission.length) {
+
+        if (currentIndex < currentMission.length) {
             loadQuestion();
         } else {
             finishMission();
@@ -319,44 +432,62 @@
         document.getElementById("game-screen").classList.add("hidden");
         document.getElementById("end-screen").classList.remove("hidden");
         document.getElementById("final-score").innerText = `Resultado del reporte: ${score}/10 aciertos.`;
-        
-        if (WEB_APP_URL === "https://script.google.com/macros/s/AKfycbxJ8VTKjafDMrK53eCMkfIuO59bUKoW-0Po9EgTCBqtElWpTz8RUU1GQIbq2TWhe9lb/exec") {
-            document.getElementById("cloud-status").innerText = "Nota guardada localmente (Falta vincular la URL del servidor).";
-            return;
-        }
 
-        // Creamos un envío tradicional que Google Sheets acepta al 100%
-        var form = document.createElement("form");
+        const porcentaje = Math.round((score / 10) * 100);
+
+        const form = document.createElement("form");
         form.method = "POST";
         form.action = WEB_APP_URL;
-        form.target = "hidden_iframe"; // Evita que la pantalla se recargue o parpadee
+        form.target = "hidden_iframe";
 
-        var inputAlumno = document.createElement("input");
+        const inputAlumno = document.createElement("input");
         inputAlumno.name = "alumno";
         inputAlumno.value = userName;
         form.appendChild(inputAlumno);
 
-        var inputAciertos = document.createElement("input");
+        const inputAciertos = document.createElement("input");
         inputAciertos.name = "aciertos";
         inputAciertos.value = score;
         form.appendChild(inputAciertos);
 
-        // Crear un iframe invisible para hacer el envío de fondo
-        var iframe = document.createElement("iframe");
+        const inputTotal = document.createElement("input");
+        inputTotal.name = "total";
+        inputTotal.value = "10";
+        form.appendChild(inputTotal);
+
+        const inputPorcentaje = document.createElement("input");
+        inputPorcentaje.name = "porcentaje";
+        inputPorcentaje.value = porcentaje + "%";
+        form.appendChild(inputPorcentaje);
+
+        const inputFecha = document.createElement("input");
+        inputFecha.name = "fecha";
+        inputFecha.value = new Date().toLocaleString("es-ES");
+        form.appendChild(inputFecha);
+
+        const iframe = document.createElement("iframe");
         iframe.name = "hidden_iframe";
         iframe.style.display = "none";
+
         document.body.appendChild(iframe);
         document.body.appendChild(form);
 
         form.submit();
 
-        // Mostramos el mensaje de éxito inmediatamente al alumno
         setTimeout(function() {
-            document.getElementById("cloud-status").innerText = "🚀 ¡Reporte enviado a la central del profesor con éxito!";
+            document.getElementById("cloud-status").innerText = "🚀 ¡Reporte enviado a la central del profesor!";
             document.getElementById("cloud-status").style.color = "#2ecc71";
-            
-            // Limpieza del código temporal
-            document.body.removeChild(form);
-            document.body.removeChild(iframe);
+
+            if (document.body.contains(form)) {
+                document.body.removeChild(form);
+            }
+
+            if (document.body.contains(iframe)) {
+                document.body.removeChild(iframe);
+            }
         }, 1000);
     }
+</script>
+
+</body>
+</html>
