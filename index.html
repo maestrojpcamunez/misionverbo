@@ -320,22 +320,43 @@
         document.getElementById("end-screen").classList.remove("hidden");
         document.getElementById("final-score").innerText = `Resultado del reporte: ${score}/10 aciertos.`;
         
-        // ENVÍO EN TIEMPO REAL A GOOGLE SHEETS
         if (WEB_APP_URL === "https://script.google.com/macros/s/AKfycbxJ8VTKjafDMrK53eCMkfIuO59bUKoW-0Po9EgTCBqtElWpTz8RUU1GQIbq2TWhe9lb/exec") {
             document.getElementById("cloud-status").innerText = "Nota guardada localmente (Falta vincular la URL del servidor).";
             return;
         }
 
-        fetch(WEB_APP_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ alumno: userName, aciertos: score })
-        }).then(() => {
+        // Creamos un envío tradicional que Google Sheets acepta al 100%
+        var form = document.createElement("form");
+        form.method = "POST";
+        form.action = WEB_APP_URL;
+        form.target = "hidden_iframe"; // Evita que la pantalla se recargue o parpadee
+
+        var inputAlumno = document.createElement("input");
+        inputAlumno.name = "alumno";
+        inputAlumno.value = userName;
+        form.appendChild(inputAlumno);
+
+        var inputAciertos = document.createElement("input");
+        inputAciertos.name = "aciertos";
+        inputAciertos.value = score;
+        form.appendChild(inputAciertos);
+
+        // Crear un iframe invisible para hacer el envío de fondo
+        var iframe = document.createElement("iframe");
+        iframe.name = "hidden_iframe";
+        iframe.style.display = "none";
+        document.body.appendChild(iframe);
+        document.body.appendChild(form);
+
+        form.submit();
+
+        // Mostramos el mensaje de éxito inmediatamente al alumno
+        setTimeout(function() {
             document.getElementById("cloud-status").innerText = "🚀 ¡Reporte enviado a la central del profesor con éxito!";
             document.getElementById("cloud-status").style.color = "#2ecc71";
-        }).catch(err => {
-            document.getElementById("cloud-status").innerText = "❌ Error al sincronizar con el satélite.";
-        });
+            
+            // Limpieza del código temporal
+            document.body.removeChild(form);
+            document.body.removeChild(iframe);
+        }, 1000);
     }
-</script>
